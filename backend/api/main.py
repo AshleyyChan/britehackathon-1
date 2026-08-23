@@ -88,5 +88,6 @@ async def process_query(request: QueryRequest):
     except HTTPException:
         raise
     except Exception as e:
-        # Do not expose internal Python stack traces to the frontend
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        import traceback
+        err_msg = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+        raise HTTPException(status_code=500, detail=err_msg)
