@@ -6,8 +6,8 @@ import { PRESET_MOCK_RESPONSES, resolveMockQuery } from '../data/mockPolicyData'
  * In development / frontend preview mode, mock data is used.
  * When a real backend is mounted, USE_MOCK can be flipped to false or driven by environment config.
  */
-const USE_MOCK = true;
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const USE_MOCK = false;
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://britehackathon-1.onrender.com/api';
 
 export class PolicyApiService {
   /**

@@ -30,6 +30,18 @@ class GroundedAnswerPipeline:
             query = extract_dates(query_or_text)
         else:
             query = query_or_text
+            # Extract dates from the query text and populate missing temporal fields
+            extracted = extract_dates(query.text)
+            if query.event_date is None:
+                query.event_date = extracted.event_date
+            if query.determination_date is None:
+                query.determination_date = extracted.determination_date
+            if query.period_start is None:
+                query.period_start = extracted.period_start
+            if query.period_end is None:
+                query.period_end = extracted.period_end
+            if getattr(query, 'claim_date', None) is None and getattr(extracted, 'claim_date', None) is not None:
+                query.claim_date = extracted.claim_date
         
         # Step 1: Retrieval
         evidence = self.retriever.retrieve(query, top_k=5)
