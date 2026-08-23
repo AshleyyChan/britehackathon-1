@@ -79,7 +79,7 @@ export const PRESET_MOCK_RESPONSES: Record<string, PolicyQueryResponse> = {
     queryId: 'qry-001',
     question: 'How long must the Department give an applicant to provide evidence?',
     timestamp: '2026-08-23T00:15:00.000Z',
-    manualVersion: 'POLICY MANUAL · CONSOLIDATED 31 DEC 2025',
+    manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
     status: 'SUFFICIENT',
     groundedAnswer: {
       summary:
@@ -107,7 +107,7 @@ export const PRESET_MOCK_RESPONSES: Record<string, PolicyQueryResponse> = {
     queryId: 'qry-002',
     question: 'What is the maximum countable resources?',
     timestamp: '2026-08-23T00:15:00.000Z',
-    manualVersion: 'POLICY MANUAL · CONSOLIDATED 31 DEC 2025',
+    manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
     status: 'SUFFICIENT',
     groundedAnswer: {
       summary: 'A household is not eligible where total countable resources exceed $4,000.',
@@ -154,7 +154,7 @@ export const PRESET_MOCK_RESPONSES: Record<string, PolicyQueryResponse> = {
     queryId: 'qry-003',
     question: 'How long do I have to report a change?',
     timestamp: '2026-08-23T00:16:00.000Z',
-    manualVersion: 'POLICY MANUAL · CONSOLIDATED 31 DEC 2025',
+    manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
     status: 'CONFLICTING',
     conflictDetails: {
       title: 'Policy Conflict Detected',
@@ -205,7 +205,7 @@ export const PRESET_MOCK_RESPONSES: Record<string, PolicyQueryResponse> = {
     queryId: 'qry-004',
     question: 'Does the policy manual cover emergency lodging reimbursement?',
     timestamp: '2026-08-23T00:17:00.000Z',
-    manualVersion: 'POLICY MANUAL · CONSOLIDATED 31 DEC 2025',
+    manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
     status: 'INSUFFICIENT',
     notCoveredDetails: {
       title: 'Not Covered by the Policy Manual',
@@ -220,7 +220,7 @@ export const PRESET_MOCK_RESPONSES: Record<string, PolicyQueryResponse> = {
     queryId: 'qry-005',
     question: 'How many days do I have to report a change?',
     timestamp: '2026-08-23T00:18:00.000Z',
-    manualVersion: 'POLICY MANUAL · CONSOLIDATED 31 DEC 2025',
+    manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
     status: 'TEMPORALLY_AMBIGUOUS',
     message:
       'The reporting period depends on when the change of circumstances occurred. Please provide the date of the change.',
@@ -274,7 +274,7 @@ export function resolveMockQuery(question: string, eventDate?: string): PolicyQu
       queryId: `qry-${Date.now()}`,
       question,
       timestamp: new Date().toISOString(),
-      manualVersion: 'POLICY MANUAL · CONSOLIDATED 31 DEC 2025',
+      manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
       status: 'SUFFICIENT',
       groundedAnswer: {
         summary: `For changes occurring on ${matchedDate}, participating households must report mandatory changes within 10 calendar days of the occurrence pursuant to §4.3.2.`,
@@ -365,7 +365,7 @@ export function resolveMockQuery(question: string, eventDate?: string): PolicyQu
       queryId: `qry-${Date.now()}`,
       question,
       timestamp: new Date().toISOString(),
-      manualVersion: 'POLICY MANUAL · CONSOLIDATED 31 DEC 2025',
+      manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
       status: 'SUFFICIENT',
       groundedAnswer: {
         summary:
@@ -394,7 +394,7 @@ export function resolveMockQuery(question: string, eventDate?: string): PolicyQu
     queryId: `qry-${Date.now()}`,
     question,
     timestamp: new Date().toISOString(),
-    manualVersion: 'POLICY MANUAL · CONSOLIDATED 31 DEC 2025',
+    manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
     status: 'INSUFFICIENT',
     notCoveredDetails: {
       title: 'Not Covered by the Policy Manual',

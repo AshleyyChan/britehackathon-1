@@ -149,7 +149,7 @@ Content-Type: application/json
 {
   "queryId": "qry-005",
   "status": "TEMPORALLY_AMBIGUOUS",
-  "manualVersion": "POLICY MANUAL · CONSOLIDATED 31 DEC 2025",
+  "manualVersion": "POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01",
   "message": "The reporting period depends on when the change of circumstances occurred. Please provide the date of the change.",
   "required_temporal_field": "event_date",
   "temporalDetails": {

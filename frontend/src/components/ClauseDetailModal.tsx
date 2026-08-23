@@ -87,7 +87,7 @@ export const ClauseDetailModal: React.FC<ClauseDetailModalProps> = ({ clauseId, 
         {/* Modal Footer */}
         <div className="bg-slate-50 p-3 sm:p-4 border-t border-slate-200 flex items-center justify-between text-xs">
           <span className="text-[10px] text-slate-400 uppercase font-mono">
-            POLICY MANUAL · CONSOLIDATED 31 DEC 2025
+            POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01
           </span>
 
           <div className="flex items-center gap-2">

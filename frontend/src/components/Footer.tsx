@@ -19,7 +19,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenManual }) => {
           className="hover:text-blue-600 transition-colors uppercase tracking-tight flex items-center gap-1 font-mono"
         >
           <BookOpen className="w-3 h-3" />
-          <span>POLICY MANUAL · CONSOLIDATED 31 DEC 2025</span>
+          <span>POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01</span>
         </button>
       </div>
     </footer>

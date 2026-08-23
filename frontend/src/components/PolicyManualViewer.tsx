@@ -150,7 +150,7 @@ export const PolicyManualViewer: React.FC<PolicyManualViewerProps> = ({
 
         {/* Footer */}
         <div className="p-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[11px] text-slate-500 shrink-0">
-          <span className="font-mono text-[10px]">POLICY MANUAL · CONSOLIDATED 31 DEC 2025</span>
+          <span className="font-mono text-[10px]">POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01</span>
           <button
             onClick={onClose}
             className="px-3 py-1 bg-slate-800 text-white rounded text-xs font-bold hover:bg-slate-700"
