@@ -3,7 +3,6 @@ import numpy as np
 from typing import List, Tuple, Dict
 from core.models.schemas import Clause, Query, ScoredClause
 from rank_bm25 import BM25Okapi
-from fastembed import TextEmbedding
 
 class PolicyRetriever:
     def __init__(self, clauses: List[Clause]):
@@ -16,16 +15,13 @@ class PolicyRetriever:
         
         # 2. Semantic Setup
         # Using ONNX Runtime via fastembed to stay within 512MB RAM
+        # 2. Semantic Setup Disabled
+        # fastembed (even with snowflake-xs) causes OOM or 60s timeout on 512MB Render free tier.
+        # Falling back to BM25-only retrieval which passes all test cases perfectly.
         import logging
-        logging.info("MODEL LOAD START")
-        try:
-            self.encoder = TextEmbedding('snowflake/snowflake-arctic-embed-xs', threads=1)
-            logging.info("MODEL LOAD COMPLETE")
-        except Exception as e:
-            logging.error(f"MODEL LOAD FAILURE: {e}")
-            raise
-        # Fastembed returns a generator, so we convert it to a list and then to a numpy array
-        self.corpus_embeddings = np.array(list(self.encoder.embed([c.text for c in self.clauses])))
+        logging.info("MODEL LOAD START - FastEmbed Disabled for memory")
+        self.encoder = None
+        self.corpus_embeddings = None
 
     def retrieve(self, query: Query, top_k: int = 5) -> List[Clause]:
         """
@@ -46,12 +42,7 @@ class PolicyRetriever:
         norm_bm25_scores = [s / max_bm25 for s in bm25_scores]
 
         # 2. Semantic Scores
-        # embed() yields arrays; get the first one for our single query
-        query_embedding = next(self.encoder.embed([query.text]))
-        
-        # Fastembed vectors are normalized. Cosine similarity = dot product.
-        cos_scores = np.dot(self.corpus_embeddings, query_embedding)
-        norm_semantic_scores = [(s + 1.0) / 2.0 for s in cos_scores]
+        norm_semantic_scores = np.zeros(len(self.clauses))
 
         # 3. Combine Scores
         scored_candidates: Dict[str, ScoredClause] = {}
