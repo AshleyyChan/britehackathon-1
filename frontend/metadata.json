@@ -1,0 +1,6 @@
+{
+  "name": "The Grounded Answer - Calder County HSP Policy Assistant",
+  "description": "A public-sector policy-grounded assistant for the Calder County Household Support Program (HSP) with strict evidence citations, conflict detection, and non-covered handling.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
