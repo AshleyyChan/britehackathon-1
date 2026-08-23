@@ -13,21 +13,24 @@ export const Header: React.FC<HeaderProps> = ({ onOpenManual }) => {
         <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-600 rounded-md flex items-center justify-center font-bold text-lg sm:text-xl text-white shadow-sm shrink-0">
           C
         </div>
-        <div>
-          <h1 className="text-xs sm:text-sm font-bold uppercase tracking-wider leading-none text-white">
+        <div className="flex flex-col justify-center">
+          <h1 className="text-xs sm:text-sm font-bold uppercase tracking-wider leading-none text-white mb-1">
             Calder County
           </h1>
-          <p className="text-[11px] sm:text-xs text-blue-200 opacity-90 mt-0.5">
-            Household Support Program (HSP)
+          <p className="text-[11px] sm:text-xs text-blue-200 opacity-90 leading-none">
+            HSP Policy Assistant
           </p>
         </div>
       </div>
 
       {/* Right meta controls */}
       <div className="flex items-center gap-3 sm:gap-4">
-        <div className="hidden md:flex items-center gap-2">
-          <div className="px-2.5 py-1 bg-slate-800/90 rounded text-[10px] uppercase font-bold tracking-widest text-slate-300 border border-slate-700 font-mono">
-            POLICY MANUAL · CONSOLIDATED 31 DEC 2025
+        <div className="hidden md:flex flex-col items-end justify-center">
+          <div className="text-[11px] uppercase font-bold tracking-widest text-slate-300 font-mono leading-tight">
+            REV 4.2
+          </div>
+          <div className="text-[11px] uppercase font-bold tracking-widest text-slate-400 font-mono leading-tight">
+            AMENDMENT 2026-01
           </div>
         </div>
 

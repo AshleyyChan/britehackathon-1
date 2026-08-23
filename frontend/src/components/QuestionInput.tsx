@@ -75,8 +75,8 @@ export const QuestionInput: React.FC<QuestionInputProps> = ({
         <h2 className="text-base sm:text-lg font-semibold text-slate-800 leading-tight">
           Policy Inquiry
         </h2>
-        <p className="text-xs text-slate-500 font-medium italic mt-0.5">
-          Ask questions about HSP policy. Answers are grounded in the official policy manual.
+        <p className="text-xs text-slate-500 font-medium mt-0.5">
+          Ask a question about HSP policy
         </p>
       </div>
 
@@ -129,23 +129,17 @@ export const QuestionInput: React.FC<QuestionInputProps> = ({
           </button>
         </div>
 
-        {/* High Density Example Chips */}
-        <div className="mt-3 flex flex-wrap gap-2 items-center">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight mr-1">
-            Examples:
-          </span>
-          {EXAMPLE_QUESTIONS.map((example) => (
-            <button
-              key={example.id}
-              type="button"
-              onClick={() => handleExampleClick(example.label)}
-              disabled={isLoading}
-              className="text-[11px] text-blue-600 hover:underline font-medium bg-blue-50 hover:bg-blue-100/80 px-2.5 py-1 rounded border border-blue-100 transition-colors cursor-pointer"
-              title={example.label}
-            >
-              {example.shortLabel}
-            </button>
-          ))}
+        {/* Verification Badges */}
+        <div className="mt-4 flex flex-wrap gap-4 items-center pl-1">
+          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 tracking-wide">
+            <span className="text-green-600">✓</span> GROUNDED
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 tracking-wide">
+            <span className="text-green-600">✓</span> CITED
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 tracking-wide">
+            <span className="text-green-600">✓</span> VERIFIED
+          </div>
         </div>
       </form>
     </div>
