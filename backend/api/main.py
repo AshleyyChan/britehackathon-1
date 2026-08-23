@@ -20,11 +20,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize pipeline
-base_dir = Path(__file__).parent.parent
-manual_path = base_dir / "policy-manual.md"
-amendment_path = base_dir / "Amendment No. 2026-01.md"
-pipeline = GroundedAnswerPipeline(manual_path, amendment_path)
+# Lazy initialize pipeline
+pipeline = None
+
+def get_pipeline():
+    global pipeline
+    if pipeline is None:
+        base_dir = Path(__file__).parent.parent
+        manual_path = base_dir / "policy-manual.md"
+        amendment_path = base_dir / "Amendment No. 2026-01.md"
+        pipeline = GroundedAnswerPipeline(manual_path, amendment_path)
+    return pipeline
 
 @app.get("/health")
 async def health_check():
@@ -42,7 +48,7 @@ async def process_query(request: QueryRequest):
             period_end=request.period_end
         )
         
-        result = pipeline.process_query(query)
+        result = get_pipeline().process_query(query)
         
         if result.answer:
             return QueryResponse(

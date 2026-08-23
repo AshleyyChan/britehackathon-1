@@ -3,7 +3,7 @@ import numpy as np
 from typing import List, Tuple, Dict
 from core.models.schemas import Clause, Query, ScoredClause
 from rank_bm25 import BM25Okapi
-from sentence_transformers import SentenceTransformer, util
+from fastembed import TextEmbedding
 
 class PolicyRetriever:
     def __init__(self, clauses: List[Clause]):
@@ -15,9 +15,10 @@ class PolicyRetriever:
         self.bm25 = BM25Okapi(tokenized_corpus)
         
         # 2. Semantic Setup
-        # all-MiniLM-L6-v2 is extremely fast, local, and sufficient for hackathon RAG.
-        self.encoder = SentenceTransformer('all-MiniLM-L6-v2')
-        self.corpus_embeddings = self.encoder.encode([c.text for c in self.clauses], convert_to_tensor=True)
+        # Using ONNX Runtime via fastembed to stay within 512MB RAM
+        self.encoder = TextEmbedding('sentence-transformers/all-MiniLM-L6-v2')
+        # Fastembed returns a generator, so we convert it to a list and then to a numpy array
+        self.corpus_embeddings = np.array(list(self.encoder.embed([c.text for c in self.clauses])))
 
     def retrieve(self, query: Query, top_k: int = 5) -> List[Clause]:
         """
@@ -38,8 +39,11 @@ class PolicyRetriever:
         norm_bm25_scores = [s / max_bm25 for s in bm25_scores]
 
         # 2. Semantic Scores
-        query_embedding = self.encoder.encode(query.text, convert_to_tensor=True)
-        cos_scores = util.cos_sim(query_embedding, self.corpus_embeddings)[0].cpu().numpy()
+        # embed() yields arrays; get the first one for our single query
+        query_embedding = next(self.encoder.embed([query.text]))
+        
+        # Fastembed vectors are normalized. Cosine similarity = dot product.
+        cos_scores = np.dot(self.corpus_embeddings, query_embedding)
         norm_semantic_scores = [(s + 1.0) / 2.0 for s in cos_scores]
 
         # 3. Combine Scores
