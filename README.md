@@ -14,7 +14,8 @@ This is a production-ready RAG application that answers questions based on the C
 - `Amendment No. 2026-01.md`: Temporal amendments taking effect on 1 March 2026.
 
 ## Running the Project
-1. Copy `.env.example` to `.env` and provide a fresh `GEMINI_API_KEY`.
-2. Install dependencies: `pip install -r requirements.txt`.
-3. Start the backend: `uvicorn api.main:app --host 0.0.0.0 --port 8000`.
-4. Run tests: `python -m unittest discover tests`.
+1. Navigate to the backend directory: `cd backend`
+2. Copy `.env.example` to `.env` and provide a fresh `GEMINI_API_KEY`.
+3. Install dependencies: `pip install -r requirements.txt`.
+4. Start the backend: `uvicorn api.main:app --host 0.0.0.0 --port 8000`.
+5. Run tests: `python -m unittest discover tests`.
