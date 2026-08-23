@@ -30,15 +30,17 @@ export const ResponseView: React.FC<ResponseViewProps> = ({
         <div className="flex items-center justify-between gap-1 mb-5 border-b border-slate-100 pb-2.5 overflow-x-auto">
           <div className="flex-1"></div>
 
-          <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400 font-mono shrink-0">
-            <Clock className="w-3 h-3" />
-            <span>
-              {new Date(response.timestamp).toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </span>
-          </div>
+          {response.timestamp && !isNaN(new Date(response.timestamp).getTime()) && (
+            <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400 font-mono shrink-0">
+              <Clock className="w-3 h-3" />
+              <span>
+                {new Date(response.timestamp).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* State Content */}

@@ -14,18 +14,7 @@ export const TemporalAmbiguousState: React.FC<TemporalAmbiguousStateProps> = ({
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState<boolean>(false);
 
-  const title = response.temporalDetails?.title || 'Temporal Information Required';
-  const generalMessage =
-    response.temporalDetails?.generalMessage ||
-    'The applicable policy depends on when the relevant event occurred.';
-  const specificMessage =
-    response.temporalDetails?.specificMessage ||
-    response.message ||
-    'The reporting period depends on when the change of circumstances occurred. Please provide the date of the change.';
-  const requiredField =
-    response.temporalDetails?.requiredTemporalField ||
-    response.required_temporal_field ||
-    'event_date';
+  const requiredField = 'EVENT DATE REQUIRED';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +35,7 @@ export const TemporalAmbiguousState: React.FC<TemporalAmbiguousStateProps> = ({
           Temporal Clarification
         </h3>
         <span className="ml-auto text-[10px] font-mono bg-blue-50 text-blue-800 px-2 py-0.5 rounded border border-blue-200 font-bold uppercase tracking-wider">
-          Field: {requiredField}
+          {requiredField}
         </span>
       </div>
 
@@ -58,16 +47,16 @@ export const TemporalAmbiguousState: React.FC<TemporalAmbiguousStateProps> = ({
           </div>
           <div>
             <h3 className="text-base sm:text-lg font-bold text-blue-950 leading-tight">
-              {title}
+              Temporal Information Required
             </h3>
             <p className="text-xs sm:text-sm text-blue-800 font-medium mt-0.5">
-              {generalMessage}
+              The applicable policy depends on when the relevant event occurred.
             </p>
           </div>
         </div>
 
         <div className="mt-3 pt-3 border-t border-blue-200/80 bg-white/70 rounded-lg p-3.5 sm:p-4 text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
-          <p className="italic">"{specificMessage}"</p>
+          <p className="italic">Please provide the date the change occurred so the applicable policy provision can be determined.</p>
         </div>
       </div>
 

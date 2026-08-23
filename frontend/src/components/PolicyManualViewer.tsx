@@ -45,7 +45,7 @@ export const PolicyManualViewer: React.FC<PolicyManualViewerProps> = ({
                 Calder County HSP
               </div>
               <h3 className="text-sm sm:text-base font-bold text-white leading-tight">
-                Policy Manual · Consolidated 31 Dec 2025
+                Policy Manual · REV 4.2 · AMENDMENT 2026-01
               </h3>
             </div>
           </div>
