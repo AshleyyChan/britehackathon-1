@@ -29,6 +29,7 @@ export interface PolicyQueryResponse {
   timestamp: string;
   manualVersion: string;
   status: ResponseStatus;
+  confidence?: number;
 
   // Root-level message/field for TEMPORALLY_AMBIGUOUS (per API contract)
   message?: string;

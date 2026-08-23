@@ -34,9 +34,19 @@ export const GroundedAnswerState: React.FC<GroundedAnswerStateProps> = ({
         <h3 className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
           Grounded Answer
         </h3>
-        <span className="ml-auto text-[10px] font-mono bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200 font-bold uppercase tracking-wider">
-          Citation: {answer.directCitation}
-        </span>
+        <div className="ml-auto flex items-center gap-2">
+          {response.confidence !== undefined && (
+            <span 
+              className="text-[10px] font-mono bg-blue-50 text-blue-800 px-2 py-0.5 rounded border border-blue-200 font-bold uppercase tracking-wider cursor-help"
+              title="Confidence reflects how strongly the verified policy evidence supports this answer."
+            >
+              Answer Confidence: {response.confidence}%
+            </span>
+          )}
+          <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200 font-bold uppercase tracking-wider">
+            Citation: {answer.directCitation}
+          </span>
+        </div>
       </div>
 
       {/* Answer Quote Card */}

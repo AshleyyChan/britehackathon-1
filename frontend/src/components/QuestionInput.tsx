@@ -132,7 +132,7 @@ export const QuestionInput: React.FC<QuestionInputProps> = ({
         {/* Verification Badges */}
         <div className="mt-4 flex flex-wrap gap-4 items-center pl-1">
           <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 tracking-wide">
-            <span className="text-green-600">✓</span> GROUNDED
+            <span className="text-green-600">✓</span> EVIDENCE-BACKED
           </div>
           <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 tracking-wide">
             <span className="text-green-600">✓</span> CITED

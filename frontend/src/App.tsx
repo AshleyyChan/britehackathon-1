@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { QuestionInput } from './components/QuestionInput';
 import { ResponseView } from './components/ResponseView';
-import { StateDemoToolbar } from './components/StateDemoToolbar';
 import { ClauseDetailModal } from './components/ClauseDetailModal';
 import { PolicyManualViewer } from './components/PolicyManualViewer';
 import { Footer } from './components/Footer';
@@ -57,25 +56,8 @@ export default function App() {
     setActiveQuestion('');
   };
 
-  // Auto-load initial canonical Grounded state on initial mount so workbench is immediately active
-  React.useEffect(() => {
-    handleAskQuestion(
-      'How long must the Department give an applicant to provide evidence?',
-      'SUFFICIENT'
-    );
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col font-sans bg-[#F8FAFC] text-slate-900 overflow-x-hidden select-text">
-      {/* Top Demo State Switcher */}
-      {import.meta.env.DEV && (
-        <StateDemoToolbar
-          currentStatus={response?.status}
-          onSelectPresetState={handleSelectPresetState}
-          onReset={handleReset}
-        />
-      )}
-
       {/* Enterprise Header */}
       <Header onOpenManual={() => setIsManualOpen(true)} />
 
@@ -122,7 +104,7 @@ export default function App() {
                   Calder County Policy Assistant
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Select a state or submit an inquiry to evaluate codified provisions.
+                  Ask a policy question to retrieve, verify, and explain the applicable provisions.
                 </p>
               </div>
 
@@ -134,69 +116,51 @@ export default function App() {
               </button>
             </div>
             
-            {import.meta.env.DEV && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-                <button
-                  onClick={() => handleSelectPresetState('SUFFICIENT')}
-                  className="p-4 rounded-lg bg-blue-50/50 border border-blue-200 text-left hover:border-blue-400 transition-colors group"
-                >
-                  <div className="text-[10px] font-bold text-blue-700 uppercase tracking-wider mb-1">
-                    1 · Grounded
-                  </div>
-                  <div className="font-bold text-slate-900 mb-1 group-hover:text-blue-700">
-                    Evidence Provision Deadline
-                  </div>
-                  <p className="text-[11px] text-slate-600">
-                    Grounded answer citing §8.2.3 (14 days requirement).
-                  </p>
-                </button>
-  
-                <button
-                  onClick={() => handleSelectPresetState('CONFLICTING')}
-                  className="p-4 rounded-lg bg-amber-50/50 border border-amber-200 text-left hover:border-amber-400 transition-colors group"
-                >
-                  <div className="text-[10px] font-bold text-amber-800 uppercase tracking-wider mb-1">
-                    2 · Conflict
-                  </div>
-                  <div className="font-bold text-slate-900 mb-1 group-hover:text-amber-800">
-                    Change Reporting Timeframe
-                  </div>
-                  <p className="text-[11px] text-slate-600">
-                    Contradiction between §4.3.2 and §9.1.4.
-                  </p>
-                </button>
-  
-                <button
-                  onClick={() => handleSelectPresetState('TEMPORALLY_AMBIGUOUS')}
-                  className="p-4 rounded-lg bg-blue-50/70 border border-blue-300 text-left hover:border-blue-500 transition-colors group"
-                >
-                  <div className="text-[10px] font-bold text-blue-800 uppercase tracking-wider mb-1">
-                    3 · Temporal
-                  </div>
-                  <div className="font-bold text-slate-900 mb-1 group-hover:text-blue-800">
-                    Date-Dependent Reporting
-                  </div>
-                  <p className="text-[11px] text-slate-600">
-                    Date clarification required to resolve applicable policy rule.
-                  </p>
-                </button>
-  
-                <button
-                  onClick={() => handleSelectPresetState('INSUFFICIENT')}
-                  className="p-4 rounded-lg bg-slate-100 border border-slate-200 text-left hover:border-slate-300 transition-colors group"
-                >
-                  <div className="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-                    4 · Not Covered
-                  </div>
-                  <div className="font-bold text-slate-900 mb-1 group-hover:text-slate-900">
-                    Emergency Lodging
-                  </div>
-                  <p className="text-[11px] text-slate-600">
-                    Uncodified rule with staff referral next step.
-                  </p>
-                </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div
+                className="p-4 rounded-lg bg-blue-50/50 border border-blue-200 text-left"
+              >
+                <div className="text-[10px] font-bold text-blue-700 uppercase tracking-wider mb-1">
+                  1 · GROUNDED
+                </div>
+                <p className="text-[11px] text-slate-600">
+                  Evidence-backed answer with supporting policy citations.
+                </p>
               </div>
-            )}
+
+              <div
+                className="p-4 rounded-lg bg-amber-50/50 border border-amber-200 text-left"
+              >
+                <div className="text-[10px] font-bold text-amber-800 uppercase tracking-wider mb-1">
+                  2 · CONFLICT
+                </div>
+                <p className="text-[11px] text-slate-600">
+                  Conflicting policy provisions detected; no definitive answer is provided.
+                </p>
+              </div>
+
+              <div
+                className="p-4 rounded-lg bg-blue-50/70 border border-blue-300 text-left"
+              >
+                <div className="text-[10px] font-bold text-blue-800 uppercase tracking-wider mb-1">
+                  3 · DATE REQUIRED
+                </div>
+                <p className="text-[11px] text-slate-600">
+                  The applicable policy depends on when the relevant event occurred.
+                </p>
+              </div>
+
+              <div
+                className="p-4 rounded-lg bg-slate-100 border border-slate-200 text-left"
+              >
+                <div className="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
+                  4 · NOT COVERED
+                </div>
+                <p className="text-[11px] text-slate-600">
+                  The policy manual does not establish an answer; referral is recommended.
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </main>
