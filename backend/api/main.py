@@ -34,7 +34,7 @@ def get_pipeline():
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "version": "bm25-only"}
+    return {"status": "ok", "version": "bm25-traceback"}
 
 @app.post("/api/query", response_model=QueryResponse, response_model_exclude_none=True)
 async def process_query(request: QueryRequest):
