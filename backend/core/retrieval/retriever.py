@@ -16,7 +16,14 @@ class PolicyRetriever:
         
         # 2. Semantic Setup
         # Using ONNX Runtime via fastembed to stay within 512MB RAM
-        self.encoder = TextEmbedding('sentence-transformers/all-MiniLM-L6-v2', threads=1)
+        import logging
+        logging.info("MODEL LOAD START")
+        try:
+            self.encoder = TextEmbedding('snowflake/snowflake-arctic-embed-xs', threads=1)
+            logging.info("MODEL LOAD COMPLETE")
+        except Exception as e:
+            logging.error(f"MODEL LOAD FAILURE: {e}")
+            raise
         # Fastembed returns a generator, so we convert it to a list and then to a numpy array
         self.corpus_embeddings = np.array(list(self.encoder.embed([c.text for c in self.clauses])))
 
