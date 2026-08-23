@@ -43,8 +43,8 @@ export class PolicyApiService {
         throw new Error(`Policy API error: HTTP ${response.status} ${response.statusText}`);
       }
 
-      const data: PolicyQueryResponse = await response.json();
-      return data;
+      const data = await response.json();
+      return mapBackendResponseToFrontend(data, request.question);
     } catch (error) {
       console.warn('Backend API request failed or not yet reachable, falling back to mock provider:', error);
       return resolveMockQuery(request.question, request.eventDate);
@@ -91,4 +91,61 @@ export class PolicyApiService {
       }
     }
   }
+}
+
+/**
+ * Maps the raw backend response to the frontend PolicyQueryResponse interface.
+ */
+function mapBackendResponseToFrontend(data: any, question: string): PolicyQueryResponse {
+  const evidenceClauses = (data.evidence || []).map((c: any) => ({
+    clauseId: c.id,
+    part: c.part || 'Policy Manual',
+    sectionTitle: c.section || 'Section',
+    exactText: c.text,
+    relevance: 'direct_authority',
+  }));
+
+  const baseResponse: PolicyQueryResponse = {
+    queryId: `qry-${Date.now()}`,
+    question,
+    timestamp: new Date().toISOString(),
+    manualVersion: 'POLICY MANUAL · REV 4.2 · AMENDMENT 2026-01',
+    status: data.status,
+    confidence: data.confidence,
+    evidenceClauses,
+  };
+
+  if (data.status === 'SUFFICIENT') {
+    baseResponse.groundedAnswer = {
+      summary: data.answer || '',
+      directCitation: data.cited_clause_ids?.[0] || '',
+    };
+  } else if (data.status === 'CONFLICTING') {
+    baseResponse.conflictDetails = {
+      title: 'Policy Conflict Detected',
+      warningMessage: 'The policy manual contains conflicting provisions.',
+      supervisorGuidance: data.next_step || 'Next step: Consult a supervisor.',
+      conflictingExcerpts: evidenceClauses.map((c: any) => ({
+        clauseId: c.clauseId,
+        sectionTitle: c.sectionTitle,
+        excerpt: c.exactText,
+        sourceSection: c.part,
+      })),
+    };
+  } else if (data.status === 'INSUFFICIENT') {
+    baseResponse.notCoveredDetails = {
+      title: 'Not Covered by the Policy Manual',
+      primaryMessage: data.reason || 'The policy manual does not establish an answer to this question.',
+      nextStepGuidance: data.next_step || 'Next step: Refer the question to the appropriate program staff.',
+    };
+  } else if (data.status === 'TEMPORALLY_AMBIGUOUS') {
+    baseResponse.temporalDetails = {
+      title: 'Temporal Information Required',
+      generalMessage: 'The applicable policy depends on when the relevant event occurred.',
+      specificMessage: data.message || 'Please provide the date the change occurred so the applicable policy provision can be determined.',
+      requiredTemporalField: data.required_temporal_field || 'event_date',
+    };
+  }
+
+  return baseResponse;
 }
