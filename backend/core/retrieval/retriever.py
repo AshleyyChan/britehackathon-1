@@ -16,7 +16,7 @@ class PolicyRetriever:
         
         # 2. Semantic Setup
         # Using ONNX Runtime via fastembed to stay within 512MB RAM
-        self.encoder = TextEmbedding('sentence-transformers/all-MiniLM-L6-v2')
+        self.encoder = TextEmbedding('sentence-transformers/all-MiniLM-L6-v2', threads=1)
         # Fastembed returns a generator, so we convert it to a list and then to a numpy array
         self.corpus_embeddings = np.array(list(self.encoder.embed([c.text for c in self.clauses])))
 
