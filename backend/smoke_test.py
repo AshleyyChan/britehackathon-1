@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 # Provide the model directly so we know it's in the environment
-os.environ["GEMINI_MODEL_ID"] = "gemini-3.6-flash"
+os.environ["GEMINI_MODEL_ID"] = "gemini-3.1-pro-preview"
 
 # Manually load .env file from root
 env_path = Path(__file__).parent / ".env"
