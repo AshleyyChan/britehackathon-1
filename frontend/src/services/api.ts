@@ -46,8 +46,8 @@ export class PolicyApiService {
       const data = await response.json();
       return mapBackendResponseToFrontend(data, request.question);
     } catch (error) {
-      console.warn('Backend API request failed or not yet reachable, falling back to mock provider:', error);
-      return resolveMockQuery(request.question, request.eventDate);
+      console.error('Backend API request failed:', error);
+      throw error;
     }
   }
 

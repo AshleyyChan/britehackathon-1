@@ -21,10 +21,30 @@ def extract_dates(query_text: str) -> Query:
         q.period_end = date(y, m2, 28)
         return q
 
-    # 2. Check for single dates
+    # 2. Check for single dates (DD Month YYYY)
     date_pattern = r'(?:(\d{1,2})\s+)?(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{4})'
+    
+    # 2b. Check for natural dates (Month DD, YYYY)
+    natural_date_pattern = r'(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2}),?\s+(\d{4})'
     matches = list(re.finditer(date_pattern, lower_text))
-    if len(matches) > 0:
+    natural_matches = list(re.finditer(natural_date_pattern, lower_text))
+    
+    if len(natural_matches) > 0:
+        match = natural_matches[0]
+        month = MONTHS[match.group(1)]
+        day = int(match.group(2))
+        year = int(match.group(3))
+        extracted_date = date(year, month, day)
+        
+        if "determination" in lower_text:
+            q.determination_date = extracted_date
+        elif "change" in lower_text or "occurred" in lower_text or "occurrence:" in lower_text:
+            q.event_date = extracted_date
+        elif "spanning" in lower_text: 
+            q.period_start = date(year, month, 1)
+            q.period_end = date(year, month, 28)
+            
+    elif len(matches) > 0:
         match = matches[0]
         day = int(match.group(1)) if match.group(1) else 15
         month = MONTHS[match.group(2)]
@@ -33,10 +53,9 @@ def extract_dates(query_text: str) -> Query:
         
         if "determination" in lower_text:
             q.determination_date = extracted_date
-        elif "change" in lower_text or "occurred" in lower_text:
+        elif "change" in lower_text or "occurred" in lower_text or "occurrence:" in lower_text:
             q.event_date = extracted_date
         elif "spanning" in lower_text: 
-            # E.g. "spanning 1 March 2026"
             q.period_start = date(year, month, 1)
             q.period_end = date(year, month, 28)
             
