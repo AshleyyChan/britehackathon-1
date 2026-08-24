@@ -87,7 +87,7 @@ def resolve_temporal_evidence(query: Query, retrieved_clauses: List[ScoredClause
                                 a_applies = True
                                 
                     if a_applies and not spans:
-                        base_applies = False
+                        pass # Keep the base clause so the LLM has contextual text for substitution amendments
                     
             if ambiguous:
                 ambiguous_ids.add(clause.id)
