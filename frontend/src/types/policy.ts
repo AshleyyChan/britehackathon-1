@@ -16,6 +16,9 @@ export interface PolicyEvidenceClause {
   relevance: RelevanceLevel;
   qualitativeLabel?: QualitativeScoreLabel;
   score?: number; // Internal retrieval score if available
+  isAmendment?: boolean;
+  baseClauseId?: string;
+  amendmentName?: string;
 }
 
 export interface PolicyQueryRequest {

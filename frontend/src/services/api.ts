@@ -103,6 +103,9 @@ function mapBackendResponseToFrontend(data: any, question: string): PolicyQueryR
     sectionTitle: c.section || 'Section',
     exactText: c.text,
     relevance: 'direct_authority',
+    isAmendment: c.is_amendment,
+    baseClauseId: c.base_clause_id,
+    amendmentName: c.amendment_name,
   }));
 
   const baseResponse: PolicyQueryResponse = {

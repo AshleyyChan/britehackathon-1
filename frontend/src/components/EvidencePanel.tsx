@@ -78,6 +78,13 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
                 {clause.sectionTitle}
               </p>
 
+              {clause.isAmendment && clause.amendmentName && (
+                <div className="mb-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-amber-50 border border-amber-200">
+                  <span className="text-[9px] font-bold text-amber-700 uppercase tracking-widest">{clause.amendmentName}</span>
+                  <span className="text-[9px] text-amber-600/80 font-mono italic">EFFECTIVE 1 MARCH 2026</span>
+                </div>
+              )}
+
               <p className="text-[11px] leading-relaxed text-slate-700 italic line-clamp-3">
                 "{clause.exactText}"
               </p>

@@ -40,4 +40,22 @@ def extract_dates(query_text: str) -> Query:
             q.period_start = date(year, month, 1)
             q.period_end = date(year, month, 28)
             
+    # 3. Check for ISO dates (YYYY-MM-DD)
+    iso_pattern = r'(\d{4})-(\d{2})-(\d{2})'
+    iso_matches = list(re.finditer(iso_pattern, lower_text))
+    if len(iso_matches) > 0:
+        match = iso_matches[0]
+        year = int(match.group(1))
+        month = int(match.group(2))
+        day = int(match.group(3))
+        extracted_date = date(year, month, day)
+        
+        if "determination" in lower_text:
+            q.determination_date = extracted_date
+        elif "occurrence:" in lower_text or "change" in lower_text or "occurred" in lower_text:
+            q.event_date = extracted_date
+        elif "spanning" in lower_text:
+            q.period_start = date(year, month, 1)
+            q.period_end = date(year, month, 28)
+
     return q

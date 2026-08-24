@@ -14,14 +14,10 @@ class PolicyRetriever:
         self.bm25 = BM25Okapi(tokenized_corpus)
         
         # 2. Semantic Setup
-        # Using ONNX Runtime via fastembed to stay within 512MB RAM
-        # 2. Semantic Setup Disabled
-        # fastembed (even with snowflake-xs) causes OOM or 60s timeout on 512MB Render free tier.
-        # Falling back to BM25-only retrieval which passes all test cases perfectly.
-        import logging
-        logging.info("MODEL LOAD START - FastEmbed Disabled for memory")
-        self.encoder = None
-        self.corpus_embeddings = None
+        from fastembed import TextEmbedding
+        self.encoder = TextEmbedding("sentence-transformers/all-MiniLM-L6-v2")
+        # Pre-compute embeddings for all clauses
+        self.corpus_embeddings = list(self.encoder.embed([c.text for c in self.clauses]))
 
     def retrieve(self, query: Query, top_k: int = 5) -> List[Clause]:
         """
@@ -42,7 +38,10 @@ class PolicyRetriever:
         norm_bm25_scores = [s / max_bm25 for s in bm25_scores]
 
         # 2. Semantic Scores
-        norm_semantic_scores = np.zeros(len(self.clauses))
+        query_embedding = list(self.encoder.embed([query.text]))[0]
+        semantic_scores = [np.dot(query_embedding, emb) for emb in self.corpus_embeddings]
+        max_semantic = max(semantic_scores) if max(semantic_scores) > 0 else 1.0
+        norm_semantic_scores = [s / max_semantic for s in semantic_scores]
 
         # 3. Combine Scores
         scored_candidates: Dict[str, ScoredClause] = {}

@@ -7,6 +7,9 @@ from pydantic import ValidationError
 from core.pipeline.orchestrator import GroundedAnswerPipeline
 from core.models.schemas import Query
 from api.schemas import QueryRequest, QueryResponse
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).parent.parent / '.env')
 
 app = FastAPI(title="Policy RAG API")
 
@@ -30,11 +33,21 @@ def get_pipeline():
         manual_path = base_dir / "policy-manual.md"
         amendment_path = base_dir / "Amendment No. 2026-01.md"
         pipeline = GroundedAnswerPipeline(manual_path, amendment_path)
+        
+        # Diagnostic logs
+        verifier_real = pipeline.verifier.api_key is not None
+        generator_real = pipeline.generator.api_key is not None
+        model_id = os.getenv("GEMINI_MODEL_ID", "gemini-3.1-pro-preview")
+        print(f"REAL MODE active in Verifier: {verifier_real}")
+        print(f"REAL MODE active in Generator: {generator_real}")
+        print(f"TEST MODE disabled: {verifier_real and generator_real}")
+        print(f"MODEL USED: {model_id}")
+        
     return pipeline
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "version": "bm25-traceback"}
+    return {"status": "ok"}
 
 @app.post("/api/query", response_model=QueryResponse, response_model_exclude_none=True)
 async def process_query(request: QueryRequest):
@@ -51,11 +64,12 @@ async def process_query(request: QueryRequest):
         result = get_pipeline().process_query(query)
         
         if result.answer:
+            conf_pct = round(result.answer.confidence * 100) if result.answer.confidence is not None else None
             return QueryResponse(
                 status="SUFFICIENT",
                 answer=result.answer.answer_text,
                 cited_clause_ids=result.answer.cited_clause_ids,
-                confidence=result.answer.confidence,
+                confidence=conf_pct,
                 evidence=result.evidence
             )
         elif result.refusal:
